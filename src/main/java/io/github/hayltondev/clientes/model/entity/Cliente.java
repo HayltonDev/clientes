@@ -1,5 +1,6 @@
 package io.github.hayltondev.clientes.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Cliente {
     private String cpf;
 
     @Column(name = "data_cadastro")
+    @JsonFormat(pattern = "dd/MM/yyyy") //formata apenas no retorno do JSON e não é salvo nesse formato do banco
     private LocalDate dataCadastro;
 
     @PrePersist //antes de persistir no banco a entidade, ele vai executar essa ação

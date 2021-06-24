@@ -14,13 +14,13 @@ import java.time.LocalDate;
 @SpringBootApplication //annotation que indica que a classe deve inicializar a aplicação e definio o scaneamento de classes abaixo dela automaticamente e injeção de dependencias
 public class ClientesApplication {
 
-    @Bean
+   /* @Bean
     public CommandLineRunner exec(@Autowired ClienteRepository clienteRepository){
         return args -> {
             Cliente cliente = Cliente.builder().cpf("12345678910").nome("Haylton").build();
             clienteRepository.save(cliente);
         };
-    }
+    }*/
 
     public static void main(String[] args) {
         SpringApplication.run(ClientesApplication.class,args);
