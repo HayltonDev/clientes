@@ -1,14 +1,15 @@
 package io.github.hayltondev.clientes.model.entity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Data //contém já os getters and setter. constructors and hashcod and equals
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Cliente {
 
     @Id
@@ -23,5 +24,9 @@ public class Cliente {
     @Column(name = "data_cadastro")
     private LocalDate dataCadastro;
 
+    @PrePersist //antes de persistir no banco a entidade, ele vai executar essa ação
+    public void prePersist(){
+        setDataCadastro(LocalDate.now());
+    }
 
 }
