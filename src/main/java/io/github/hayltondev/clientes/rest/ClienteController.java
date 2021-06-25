@@ -30,4 +30,15 @@ public class ClienteController {
         return repository.findById(id).orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)); //supplier java
         //se encontrar o cliente ele irá retornar, caso contrário irá retornar a exception notfound
     }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT) //NO_CONTENT não nada para o servidor retornar, porém deu certo a execução feita pela requisição do client para o servidor
+    public void deletar(@PathVariable Integer id){
+         repository.findById(id)
+                .map( cliente -> {
+                    repository.delete(cliente);
+                    return Void.TYPE; //por conta de que o map pode retornar tanto cliente quanto null para não cair ali no orElseThrow
+                })
+                .orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND) );
+    }
 }
