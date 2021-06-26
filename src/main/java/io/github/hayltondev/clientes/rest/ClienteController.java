@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/clientes") //serve para mapear a url base que serve para identificar esse controller
 public class ClienteController {
@@ -21,7 +23,8 @@ public class ClienteController {
 
     @PostMapping //indica que vamos criar um recurso no servidor quando mandado a requisicao
     @ResponseStatus(HttpStatus.CREATED) //se não colocar essa anotation, por padrao retornara status OK, ai não segue abordagem RESTFull
-    public Cliente salvar(@RequestBody Cliente cliente){ //@RequestBody indica que é JSON body que veio do corpo da requisição, o json montado do postaman por exemplo
+    //@valid estou falando para o spring no momento da requisição fazer aquelas validações de notNull, notEmpty de beans validator com mensagens customizaadas que criei de internacionalizacao
+    public Cliente salvar(@RequestBody @Valid Cliente cliente){ //@RequestBody indica que é JSON body que veio do corpo da requisição, o json montado do postaman por exemplo. com
         return repository.save(cliente);
     }
 
@@ -41,4 +44,17 @@ public class ClienteController {
                 })
                 .orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND) );
     }
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void atualizar(@PathVariable Integer id, @RequestBody Cliente clienteAtualizado){
+        repository.findById(id)
+                .map( cliente -> {
+                    clienteAtualizado.setId(cliente.getId());
+                    repository.save(clienteAtualizado);
+                    return clienteAtualizado;
+                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+    }
+
 }
