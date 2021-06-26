@@ -30,7 +30,7 @@ public class ClienteController {
 
     @GetMapping("{id}")
     public Cliente bucarPorId(@PathVariable("id") Integer id){ //posso omitir o "id" do pathVariable por ser o mesmo identificador do atributo Integer id
-        return repository.findById(id).orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND)); //supplier java
+        return repository.findById(id).orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado!")); //supplier java
         //se encontrar o cliente ele irá retornar, caso contrário irá retornar a exception notfound
     }
 
@@ -42,18 +42,18 @@ public class ClienteController {
                     repository.delete(cliente);
                     return Void.TYPE; //por conta de que o map pode retornar tanto cliente quanto null para não cair ali no orElseThrow
                 })
-                .orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND) );
+                .orElseThrow( ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado!") );
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void atualizar(@PathVariable Integer id, @RequestBody Cliente clienteAtualizado){
+    public void atualizar(@PathVariable Integer id, @RequestBody @Valid Cliente clienteAtualizado){
         repository.findById(id)
                 .map( cliente -> {
                     clienteAtualizado.setId(cliente.getId());
                     repository.save(clienteAtualizado);
                     return clienteAtualizado;
-                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado!"));
 
     }
 
