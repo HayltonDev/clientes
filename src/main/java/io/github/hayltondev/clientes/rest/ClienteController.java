@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/clientes") //serve para mapear a url base que serve para identificar esse controller
+@CrossOrigin("http://localhost:4200")
 public class ClienteController {
 
     private final ClienteRepository repository;
@@ -19,6 +21,11 @@ public class ClienteController {
     @Autowired
     public ClienteController(ClienteRepository repository){
         this.repository = repository;
+    }
+
+    @GetMapping
+    public List<Cliente> obterTodosCLientes(){
+        return this.repository.findAll();
     }
 
     @PostMapping //indica que vamos criar um recurso no servidor quando mandado a requisicao
