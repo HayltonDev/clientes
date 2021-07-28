@@ -47,7 +47,7 @@ public class ServicoPrestadoController {
     }
 
     @GetMapping
-    public List<ServicoPrestado> findByNomeClienteAndMes(@RequestParam(value = "nome", required = false, defaultValue = "") String nome,
+    public List<ServicoPrestado> pesquisar(@RequestParam(value = "nome", required = false, defaultValue = "") String nome,
                                                          @RequestParam(value = "mes", required = false, defaultValue = "") Integer mes ){
         return repository.findByNomeClienteAndMes("%"+nome+ "%", mes);
     }
